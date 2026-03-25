@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <h1>&#127859; Recipe App</h1>
+      <div class="search-bar">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search for a recipe online..."
+          aria-label="Search recipes"
+        />
+        <button id="search-btn">Search</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Sidebar: local recipe list -->
+    <aside id="sidebar">
+      <h2>My Recipes</h2>
+      <ul id="recipe-list" aria-label="Recipe list"></ul>
+    </aside>
+
+    <!-- Content area -->
+    <section id="content">
+
+      <!-- Default empty state -->
+      <div id="placeholder">
+        <div class="placeholder-inner">
+          <span class="placeholder-icon">&#127859;</span>
+          <p>Select a recipe from the list<br/>or search for one online.</p>
+        </div>
+      </div>
+
+      <!-- Recipe card -->
+      <article id="recipe-card" class="hidden" aria-live="polite">
+        <div class="card-header">
+          <img id="card-image" src="" alt="" class="hidden" />
+          <div class="card-title-block">
+            <h2 id="card-title"></h2>
+            <div class="card-meta">
+              <span class="badge" id="card-meal-type"></span>
+              <span class="badge badge-serves" id="card-serves"></span>
+              <span class="badge" id="card-difficulty"></span>
+            </div>
+          </div>
+          <button id="save-btn" class="hidden" title="Save to My Recipes">&#128190; Save Recipe</button>
+        </div>
+
+        <div class="card-body">
+          <div class="ingredients-section">
+            <h3>Ingredients</h3>
+            <ul id="card-ingredients"></ul>
+          </div>
+
+          <div class="steps-section">
+            <h3>Preparation Steps</h3>
+            <ol id="card-steps"></ol>
+          </div>
+        </div>
+      </article>
+
+      <!-- Search results -->
+      <section id="search-results" class="hidden" aria-live="polite">
+        <div class="search-results-header">
+          <h2 id="search-results-title"></h2>
+          <button id="close-search-btn" title="Close search results">&#10005;</button>
+        </div>
+        <ul id="search-results-list"></ul>
+        <p id="no-results-msg" class="hidden warning">No matching recipes found. Try a different search term.</p>
+      </section>
+
+    </section>
+  </main>
+
+  <!-- Loading overlay -->
+  <div id="loading" class="hidden" aria-live="polite">
+    <div class="spinner"></div>
+    <p>Searching...</p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

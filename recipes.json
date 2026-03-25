@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "title": "Fluffy Pancakes",
+    "mealType": "Breakfast",
+    "serves": 4,
+    "difficulty": "Beginner",
+    "image": "https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg",
+    "ingredients": [
+      { "amount": "1 cup", "item": "all-purpose flour" },
+      { "amount": "2 tbsp", "item": "sugar" },
+      { "amount": "1 tsp", "item": "baking powder" },
+      { "amount": "1/2 tsp", "item": "baking soda" },
+      { "amount": "1/4 tsp", "item": "salt" },
+      { "amount": "1 cup", "item": "buttermilk" },
+      { "amount": "1", "item": "large egg" },
+      { "amount": "2 tbsp", "item": "melted butter" },
+      { "amount": "1 tsp", "item": "vanilla extract" }
+    ],
+    "steps": [
+      "In a large bowl, whisk together flour, sugar, baking powder, baking soda, and salt.",
+      "In a separate bowl, whisk buttermilk, egg, melted butter, and vanilla extract.",
+      "Pour the wet ingredients into the dry ingredients and stir gently until just combined (some lumps are fine).",
+      "Heat a non-stick griddle or skillet over medium heat and lightly grease it.",
+      "Pour about 1/4 cup of batter per pancake onto the griddle.",
+      "Cook until bubbles form on the surface and edges look set, about 2–3 minutes.",
+      "Flip and cook the other side for 1–2 minutes until golden brown.",
+      "Serve immediately with maple syrup, butter, or your favourite toppings."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Classic Caesar Salad",
+    "mealType": "Lunch",
+    "serves": 2,
+    "difficulty": "Beginner",
+    "image": "https://www.themealdb.com/images/media/meals/xxrxux1503070723.jpg",
+    "ingredients": [
+      { "amount": "1 head", "item": "romaine lettuce, chopped" },
+      { "amount": "1/2 cup", "item": "Caesar dressing" },
+      { "amount": "1/2 cup", "item": "Parmesan cheese, grated" },
+      { "amount": "1 cup", "item": "croutons" },
+      { "amount": "1 tsp", "item": "black pepper" },
+      { "amount": "1", "item": "lemon, juiced" }
+    ],
+    "steps": [
+      "Wash and thoroughly dry the romaine lettuce, then chop into bite-sized pieces.",
+      "Place the lettuce into a large salad bowl.",
+      "Drizzle Caesar dressing over the lettuce and toss well to coat evenly.",
+      "Add the grated Parmesan cheese and croutons.",
+      "Squeeze the lemon juice over the salad.",
+      "Season with black pepper and toss gently once more.",
+      "Serve immediately to keep the croutons crisp."
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Spaghetti Bolognese",
+    "mealType": "Supper",
+    "serves": 4,
+    "difficulty": "Intermediate",
+    "image": "https://www.themealdb.com/images/media/meals/sutysw1468247559.jpg",
+    "ingredients": [
+      { "amount": "400g", "item": "spaghetti" },
+      { "amount": "500g", "item": "beef mince" },
+      { "amount": "1 large", "item": "onion, finely chopped" },
+      { "amount": "3 cloves", "item": "garlic, minced" },
+      { "amount": "2 cans", "item": "crushed tomatoes (400g each)" },
+      { "amount": "2 tbsp", "item": "tomato paste" },
+      { "amount": "1 tsp", "item": "dried oregano" },
+      { "amount": "1 tsp", "item": "dried basil" },
+      { "amount": "1 tsp", "item": "salt" },
+      { "amount": "1/2 tsp", "item": "black pepper" },
+      { "amount": "2 tbsp", "item": "olive oil" },
+      { "amount": "1/2 cup", "item": "red wine (optional)" },
+      { "amount": "to serve", "item": "Parmesan cheese, grated" }
+    ],
+    "steps": [
+      "Heat olive oil in a large pan over medium heat. Add onion and cook for 5 minutes until softened.",
+      "Add garlic and cook for 1 more minute.",
+      "Add the beef mince and cook, breaking it up, until browned (about 8 minutes).",
+      "Pour in the red wine (if using) and cook for 2 minutes until mostly evaporated.",
+      "Stir in the crushed tomatoes, tomato paste, oregano, basil, salt, and pepper.",
+      "Reduce heat to low and simmer uncovered for 20–25 minutes, stirring occasionally.",
+      "Meanwhile, cook spaghetti in salted boiling water according to package directions until al dente.",
+      "Drain spaghetti and serve topped with the Bolognese sauce and grated Parmesan."
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Berry Smoothie",
+    "mealType": "Snack",
+    "serves": 1,
+    "difficulty": "Beginner",
+    "image": "https://www.themealdb.com/images/media/meals/uuyrrx1487327994.jpg",
+    "ingredients": [
+      { "amount": "1 cup", "item": "mixed frozen berries (strawberry, blueberry, raspberry)" },
+      { "amount": "1", "item": "banana" },
+      { "amount": "1 cup", "item": "Greek yogurt" },
+      { "amount": "1/2 cup", "item": "milk or almond milk" },
+      { "amount": "1 tbsp", "item": "honey" },
+      { "amount": "1/2 tsp", "item": "vanilla extract" }
+    ],
+    "steps": [
+      "Add the frozen berries and banana to a blender.",
+      "Add the Greek yogurt and milk.",
+      "Drizzle in the honey and vanilla extract.",
+      "Blend on high speed for 30–60 seconds until smooth and creamy.",
+      "Taste and adjust sweetness with more honey if desired.",
+      "Pour into a glass and serve immediately."
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Scrambled Eggs",
+    "mealType": "Breakfast",
+    "serves": 2,
+    "difficulty": "Beginner",
+    "image": "https://www.themealdb.com/images/media/meals/xrysxr1487325083.jpg",
+    "ingredients": [
+      { "amount": "4 large", "item": "eggs" },
+      { "amount": "2 tbsp", "item": "butter" },
+      { "amount": "2 tbsp", "item": "milk or cream" },
+      { "amount": "1/4 tsp", "item": "salt" },
+      { "amount": "1/4 tsp", "item": "black pepper" },
+      { "amount": "1 tbsp", "item": "chives, chopped (optional)" }
+    ],
+    "steps": [
+      "Crack eggs into a bowl, add milk, salt, and pepper, then whisk until well combined.",
+      "Heat butter in a non-stick pan over low-medium heat until melted and foamy.",
+      "Pour in the egg mixture.",
+      "Using a spatula, gently push the eggs from the edges toward the centre as they start to set.",
+      "Continue cooking slowly, folding gently, until eggs are just softly set and still slightly glossy.",
+      "Remove from heat (carry-over heat will finish cooking them).",
+      "Sprinkle with chives if using and serve immediately on toast."
+    ]
+  }
+]
