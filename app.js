@@ -525,7 +525,7 @@ function updateStepNumbers() {
   });
 }
 
-function handleAddRecipe(e) {
+async function handleAddRecipe(e) {
   e.preventDefault();
   formError.classList.add('hidden');
 
@@ -580,8 +580,7 @@ function handleAddRecipe(e) {
     return;
   }
 
-  const newRecipe = {
-    id:         `custom-${Date.now()}`,
+  const recipeData = {
     title,
     mealType,
     serves:     servesRaw ? parseInt(servesRaw, 10) : null,
@@ -589,14 +588,36 @@ function handleAddRecipe(e) {
     image:      image || '',
     ingredients,
     steps,
-    source:     'custom',
   };
 
-  customRecipes.push(newRecipe);
-  persistCustomRecipes();
-  renderSidebar();
-  closeAddModal();
-  showLocalRecipe(newRecipe);
+  // Try to persist as a JSON file via the local server
+  try {
+    const res = await fetch('/api/recipes', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(recipeData),
+    });
+    if (!res.ok) throw new Error(`Server responded ${res.status}`);
+    const newRecipe = await res.json();
+    // Add to in-memory localRecipes so it appears without a full reload
+    localRecipes.push(newRecipe);
+    renderSidebar();
+    closeAddModal();
+    showLocalRecipe(newRecipe);
+  } catch (err) {
+    // Server unavailable – fall back to localStorage so the app still works
+    console.warn('Could not create recipe file, falling back to localStorage:', err);
+    const newRecipe = {
+      id:     `custom-${Date.now()}`,
+      source: 'custom',
+      ...recipeData,
+    };
+    customRecipes.push(newRecipe);
+    persistCustomRecipes();
+    renderSidebar();
+    closeAddModal();
+    showLocalRecipe(newRecipe);
+  }
 }
 
 // ─── Event Listeners ──────────────────────────────────────

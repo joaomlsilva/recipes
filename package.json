@@ -1,0 +1,12 @@
+{
+  "name": "recipes",
+  "version": "1.0.0",
+  "description": "Local recipe app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
