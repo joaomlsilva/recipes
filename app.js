@@ -10,10 +10,11 @@ const MEALDB_SEARCH_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=
 const MEALDB_LOOKUP_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 
 // ─── State ───────────────────────────────────────────────
-let localRecipes  = [];      // loaded from recipes.json
-let savedRecipes  = [];      // saved API recipes (persisted in sessionStorage)
-let customRecipes = [];      // user-created recipes (persisted in localStorage)
-let activeRecipeId = null;   // currently displayed local recipe id
+let localRecipes     = [];   // loaded from recipes.json
+let savedRecipes     = [];   // saved API recipes (persisted in sessionStorage)
+let customRecipes    = [];   // user-created recipes (persisted in localStorage)
+let deletedLocalIds  = [];   // IDs of deleted recipes.json entries (persisted in localStorage)
+let activeRecipeId   = null; // currently displayed local recipe id
 
 // ─── DOM refs ────────────────────────────────────────────
 const recipeList        = document.getElementById('recipe-list');
@@ -54,6 +55,7 @@ const cardSteps      = document.getElementById('card-steps');
 async function init() {
   loadSavedRecipes();
   loadCustomRecipes();
+  loadDeletedLocalIds();
   await fetchLocalRecipes();
   renderSidebar();
 }
@@ -98,12 +100,26 @@ function persistCustomRecipes() {
   localStorage.setItem('customRecipes', JSON.stringify(customRecipes));
 }
 
+// ─── Deleted local recipe IDs (localStorage) ─────────────
+function loadDeletedLocalIds() {
+  try {
+    const raw = localStorage.getItem('deletedLocalIds');
+    deletedLocalIds = raw ? JSON.parse(raw) : [];
+  } catch {
+    deletedLocalIds = [];
+  }
+}
+
+function persistDeletedLocalIds() {
+  localStorage.setItem('deletedLocalIds', JSON.stringify(deletedLocalIds));
+}
+
 // ─── Sidebar rendering ────────────────────────────────────
 function renderSidebar() {
   recipeList.innerHTML = '';
 
   const allRecipes = [
-    ...localRecipes,
+    ...localRecipes.filter(r => !deletedLocalIds.includes(r.id)),
     ...customRecipes.filter(cr => !localRecipes.find(r => r.id === cr.id)),
     ...savedRecipes.filter(sr => !localRecipes.find(r => r.id === sr.id) &&
                                   !customRecipes.find(r => r.id === sr.id))
@@ -128,19 +144,15 @@ function renderSidebar() {
     titleSpan.textContent = recipe.title;
     li.appendChild(titleSpan);
 
-    const isDeletable = savedRecipes.some(r => r.id === recipe.id) ||
-                        customRecipes.some(r => r.id === recipe.id);
-    if (isDeletable) {
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'btn-delete-recipe';
-      deleteBtn.setAttribute('aria-label', `Delete ${recipe.title}`);
-      deleteBtn.textContent = '🗑️';
-      deleteBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        deleteRecipe(recipe);
-      });
-      li.appendChild(deleteBtn);
-    }
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-delete-recipe';
+    deleteBtn.setAttribute('aria-label', `Delete ${recipe.title}`);
+    deleteBtn.textContent = '🗑️';
+    deleteBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      deleteRecipe(recipe);
+    });
+    li.appendChild(deleteBtn);
 
     li.addEventListener('click', () => showLocalRecipe(recipe));
     recipeList.appendChild(li);
@@ -159,6 +171,12 @@ function deleteRecipe(recipe) {
   if (customIdx !== -1) {
     customRecipes.splice(customIdx, 1);
     persistCustomRecipes();
+  }
+
+  const isLocal = localRecipes.some(r => r.id === recipe.id);
+  if (isLocal && !deletedLocalIds.includes(recipe.id)) {
+    deletedLocalIds.push(recipe.id);
+    persistDeletedLocalIds();
   }
 
   if (activeRecipeId === recipe.id) {
