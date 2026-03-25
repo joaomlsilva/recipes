@@ -143,28 +143,77 @@ function renderSidebar() {
     return;
   }
 
+  // Group by mealType
+  const groups = {};
   allRecipes.forEach(recipe => {
-    const li = document.createElement('li');
-    li.dataset.id = recipe.id;
-    if (recipe.id === activeRecipeId) li.classList.add('active');
+    const key = recipe.mealType || 'Other';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(recipe);
+  });
 
-    const titleSpan = document.createElement('span');
-    titleSpan.className = 'recipe-title-text';
-    titleSpan.textContent = recipe.title;
-    li.appendChild(titleSpan);
+  const mealTypeOrder = ['Breakfast', 'Lunch', 'Supper', 'Snack', 'Other'];
+  const sortedKeys = Object.keys(groups).sort((a, b) => {
+    const ai = mealTypeOrder.indexOf(a);
+    const bi = mealTypeOrder.indexOf(b);
+    const av = ai === -1 ? 99 : ai;
+    const bv = bi === -1 ? 99 : bi;
+    return av !== bv ? av - bv : a.localeCompare(b);
+  });
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn-delete-recipe';
-    deleteBtn.setAttribute('aria-label', `Delete ${recipe.title}`);
-    deleteBtn.textContent = '🗑️';
-    deleteBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      deleteRecipe(recipe);
+  sortedKeys.forEach(mealType => {
+    const recipes = groups[mealType];
+    const hasActive = recipes.some(r => r.id === activeRecipeId);
+
+    // Wrapper list item containing the <details> dropdown
+    const wrapperLi = document.createElement('li');
+    wrapperLi.className = 'meal-type-group';
+
+    const details = document.createElement('details');
+    if (hasActive || sortedKeys.length === 1) details.open = true;
+
+    const summary = document.createElement('summary');
+    summary.className = 'meal-type-summary';
+
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent = mealType;
+    const countSpan = document.createElement('span');
+    countSpan.className = 'meal-type-count';
+    countSpan.textContent = recipes.length;
+
+    summary.appendChild(labelSpan);
+    summary.appendChild(countSpan);
+    details.appendChild(summary);
+
+    const innerUl = document.createElement('ul');
+    innerUl.className = 'meal-type-recipes';
+
+    recipes.forEach(recipe => {
+      const li = document.createElement('li');
+      li.dataset.id = recipe.id;
+      if (recipe.id === activeRecipeId) li.classList.add('active');
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'recipe-title-text';
+      titleSpan.textContent = recipe.title;
+      li.appendChild(titleSpan);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn-delete-recipe';
+      deleteBtn.setAttribute('aria-label', `Delete ${recipe.title}`);
+      deleteBtn.textContent = '🗑️';
+      deleteBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        deleteRecipe(recipe);
+      });
+      li.appendChild(deleteBtn);
+
+      li.addEventListener('click', () => showLocalRecipe(recipe));
+      innerUl.appendChild(li);
     });
-    li.appendChild(deleteBtn);
 
-    li.addEventListener('click', () => showLocalRecipe(recipe));
-    recipeList.appendChild(li);
+    details.appendChild(innerUl);
+    wrapperLi.appendChild(details);
+    recipeList.appendChild(wrapperLi);
   });
 }
 
