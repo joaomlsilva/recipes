@@ -1,0 +1,33 @@
+{
+  "id": 3,
+  "title": "Spaghetti Bolognese",
+  "mealType": "Supper",
+  "serves": 4,
+  "difficulty": "Intermediate",
+  "image": "https://www.themealdb.com/images/media/meals/sutysw1468247559.jpg",
+  "ingredients": [
+    { "amount": "400g",    "item": "spaghetti" },
+    { "amount": "500g",    "item": "beef mince" },
+    { "amount": "1 large", "item": "onion, finely chopped" },
+    { "amount": "3 cloves","item": "garlic, minced" },
+    { "amount": "2 cans",  "item": "crushed tomatoes (400g each)" },
+    { "amount": "2 tbsp",  "item": "tomato paste" },
+    { "amount": "1 tsp",   "item": "dried oregano" },
+    { "amount": "1 tsp",   "item": "dried basil" },
+    { "amount": "1 tsp",   "item": "salt" },
+    { "amount": "1/2 tsp", "item": "black pepper" },
+    { "amount": "2 tbsp",  "item": "olive oil" },
+    { "amount": "1/2 cup", "item": "red wine (optional)" },
+    { "amount": "to serve","item": "Parmesan cheese, grated" }
+  ],
+  "steps": [
+    "Heat olive oil in a large pan over medium heat. Add onion and cook for 5 minutes until softened.",
+    "Add garlic and cook for 1 more minute.",
+    "Add the beef mince and cook, breaking it up, until browned (about 8 minutes).",
+    "Pour in the red wine (if using) and cook for 2 minutes until mostly evaporated.",
+    "Stir in the crushed tomatoes, tomato paste, oregano, basil, salt, and pepper.",
+    "Reduce heat to low and simmer uncovered for 20–25 minutes, stirring occasionally.",
+    "Meanwhile, cook spaghetti in salted boiling water according to package directions until al dente.",
+    "Drain spaghetti and serve topped with the Bolognese sauce and grated Parmesan."
+  ]
+}

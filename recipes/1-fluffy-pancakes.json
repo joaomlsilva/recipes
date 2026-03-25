@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "title": "Fluffy Pancakes",
+  "mealType": "Breakfast",
+  "serves": 4,
+  "difficulty": "Beginner",
+  "image": "https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg",
+  "ingredients": [
+    { "amount": "1 cup",  "item": "all-purpose flour" },
+    { "amount": "2 tbsp", "item": "sugar" },
+    { "amount": "1 tsp",  "item": "baking powder" },
+    { "amount": "1/2 tsp","item": "baking soda" },
+    { "amount": "1/4 tsp","item": "salt" },
+    { "amount": "1 cup",  "item": "buttermilk" },
+    { "amount": "1",      "item": "large egg" },
+    { "amount": "2 tbsp", "item": "melted butter" },
+    { "amount": "1 tsp",  "item": "vanilla extract" }
+  ],
+  "steps": [
+    "In a large bowl, whisk together flour, sugar, baking powder, baking soda, and salt.",
+    "In a separate bowl, whisk buttermilk, egg, melted butter, and vanilla extract.",
+    "Pour the wet ingredients into the dry ingredients and stir gently until just combined (some lumps are fine).",
+    "Heat a non-stick griddle or skillet over medium heat and lightly grease it.",
+    "Pour about 1/4 cup of batter per pancake onto the griddle.",
+    "Cook until bubbles form on the surface and edges look set, about 2–3 minutes.",
+    "Flip and cook the other side for 1–2 minutes until golden brown.",
+    "Serve immediately with maple syrup, butter, or your favourite toppings."
+  ]
+}

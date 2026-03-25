@@ -60,12 +60,21 @@ async function init() {
   renderSidebar();
 }
 
-// ─── Load local recipes.json ──────────────────────────────
+// ─── Load local recipes (one file per recipe) ────────────
 async function fetchLocalRecipes() {
   try {
-    const res = await fetch('recipes.json');
-    if (!res.ok) throw new Error('Failed to load recipes.json');
-    localRecipes = await res.json();
+    const indexRes = await fetch('recipes/index.json');
+    if (!indexRes.ok) throw new Error('Failed to load recipes/index.json');
+    const filenames = await indexRes.json();
+
+    const results = await Promise.all(
+      filenames.map(async filename => {
+        const res = await fetch(`recipes/${filename}`);
+        if (!res.ok) throw new Error(`Failed to load recipes/${filename}`);
+        return res.json();
+      })
+    );
+    localRecipes = results;
   } catch (err) {
     console.error(err);
     localRecipes = [];

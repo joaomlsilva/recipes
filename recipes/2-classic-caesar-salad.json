@@ -1,0 +1,25 @@
+{
+  "id": 2,
+  "title": "Classic Caesar Salad",
+  "mealType": "Lunch",
+  "serves": 2,
+  "difficulty": "Beginner",
+  "image": "https://www.themealdb.com/images/media/meals/xxrxux1503070723.jpg",
+  "ingredients": [
+    { "amount": "1 head",  "item": "romaine lettuce, chopped" },
+    { "amount": "1/2 cup", "item": "Caesar dressing" },
+    { "amount": "1/2 cup", "item": "Parmesan cheese, grated" },
+    { "amount": "1 cup",   "item": "croutons" },
+    { "amount": "1 tsp",   "item": "black pepper" },
+    { "amount": "1",       "item": "lemon, juiced" }
+  ],
+  "steps": [
+    "Wash and thoroughly dry the romaine lettuce, then chop into bite-sized pieces.",
+    "Place the lettuce into a large salad bowl.",
+    "Drizzle Caesar dressing over the lettuce and toss well to coat evenly.",
+    "Add the grated Parmesan cheese and croutons.",
+    "Squeeze the lemon juice over the salad.",
+    "Season with black pepper and toss gently once more.",
+    "Serve immediately to keep the croutons crisp."
+  ]
+}

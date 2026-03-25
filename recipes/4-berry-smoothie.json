@@ -1,0 +1,24 @@
+{
+  "id": 4,
+  "title": "Berry Smoothie",
+  "mealType": "Snack",
+  "serves": 1,
+  "difficulty": "Beginner",
+  "image": "https://www.themealdb.com/images/media/meals/uuyrrx1487327994.jpg",
+  "ingredients": [
+    { "amount": "1 cup",   "item": "mixed frozen berries (strawberry, blueberry, raspberry)" },
+    { "amount": "1",       "item": "banana" },
+    { "amount": "1 cup",   "item": "Greek yogurt" },
+    { "amount": "1/2 cup", "item": "milk or almond milk" },
+    { "amount": "1 tbsp",  "item": "honey" },
+    { "amount": "1/2 tsp", "item": "vanilla extract" }
+  ],
+  "steps": [
+    "Add the frozen berries and banana to a blender.",
+    "Add the Greek yogurt and milk.",
+    "Drizzle in the honey and vanilla extract.",
+    "Blend on high speed for 30–60 seconds until smooth and creamy.",
+    "Taste and adjust sweetness with more honey if desired.",
+    "Pour into a glass and serve immediately."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": 5,
+  "title": "Scrambled Eggs",
+  "mealType": "Breakfast",
+  "serves": 2,
+  "difficulty": "Beginner",
+  "image": "https://www.themealdb.com/images/media/meals/xrysxr1487325083.jpg",
+  "ingredients": [
+    { "amount": "4 large", "item": "eggs" },
+    { "amount": "2 tbsp",  "item": "butter" },
+    { "amount": "2 tbsp",  "item": "milk or cream" },
+    { "amount": "1/4 tsp", "item": "salt" },
+    { "amount": "1/4 tsp", "item": "black pepper" },
+    { "amount": "1 tbsp",  "item": "chives, chopped (optional)" }
+  ],
+  "steps": [
+    "Crack eggs into a bowl, add milk, salt, and pepper, then whisk until well combined.",
+    "Heat butter in a non-stick pan over low-medium heat until melted and foamy.",
+    "Pour in the egg mixture.",
+    "Using a spatula, gently push the eggs from the edges toward the centre as they start to set.",
+    "Continue cooking slowly, folding gently, until eggs are just softly set and still slightly glossy.",
+    "Remove from heat (carry-over heat will finish cooking them).",
+    "Sprinkle with chives if using and serve immediately on toast."
+  ]
+}
