@@ -48,6 +48,7 @@ const cardTitle      = document.getElementById('card-title');
 const cardMealType   = document.getElementById('card-meal-type');
 const cardServes     = document.getElementById('card-serves');
 const cardDifficulty = document.getElementById('card-difficulty');
+const cardOrigin     = document.getElementById('card-origin');
 const cardIngredients= document.getElementById('card-ingredients');
 const cardSteps      = document.getElementById('card-steps');
 
@@ -272,6 +273,15 @@ function renderCard(recipe, isApiResult) {
   cardDifficulty.textContent = recipe.difficulty || 'Unknown';
   cardDifficulty.dataset.difficulty = recipe.difficulty || '';
 
+  // Origin
+  if (recipe.origin) {
+    cardOrigin.textContent = `By ${recipe.origin}`;
+    cardOrigin.classList.remove('hidden');
+  } else {
+    cardOrigin.textContent = '';
+    cardOrigin.classList.add('hidden');
+  }
+
   // Ingredients
   cardIngredients.innerHTML = '';
   (recipe.ingredients || []).forEach(ing => {
@@ -328,6 +338,7 @@ async function saveApiRecipe(recipe) {
         serves:      recipe.serves,
         difficulty:  recipe.difficulty,
         image:       recipe.image,
+        origin:      recipe.origin || '',
         ingredients: recipe.ingredients,
         steps:       recipe.steps,
       }),
@@ -474,6 +485,7 @@ function adaptApiMeal(meal) {
     serves:      null,   // MealDB does not provide serving count
     difficulty:  'Unknown',
     image:       meal.strMealThumb || '',
+    origin:      '',
     ingredients,
     steps,
     source:      'api',
@@ -615,6 +627,7 @@ async function handleAddRecipe(e) {
   const servesRaw  = document.getElementById('form-serves').value.trim();
   const difficulty = document.getElementById('form-difficulty').value;
   const image      = document.getElementById('form-image').value.trim();
+  const origin     = document.getElementById('form-origin').value.trim();
 
   // Clear previous invalid states
   document.querySelectorAll('#add-recipe-form .invalid').forEach(el => el.classList.remove('invalid'));
@@ -666,6 +679,7 @@ async function handleAddRecipe(e) {
     serves:     servesRaw ? parseInt(servesRaw, 10) : null,
     difficulty: difficulty || 'Unknown',
     image:      image || '',
+    origin:     origin || '',
     ingredients,
     steps,
   };

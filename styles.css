@@ -349,6 +349,13 @@ details[open] > .meal-type-summary::before {
   flex-wrap: wrap;
 }
 
+.card-origin {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: var(--clr-text-muted);
+  font-style: italic;
+}
+
 .badge {
   display: inline-block;
   padding: 4px 12px;

@@ -5,6 +5,7 @@
   "serves": 4,
   "difficulty": "Intermediate",
   "image": "https://www.themealdb.com/images/media/meals/sutysw1468247559.jpg",
+  "origin": "",
   "ingredients": [
     { "amount": "400g",    "item": "spaghetti" },
     { "amount": "500g",    "item": "beef mince" },

@@ -127,6 +127,7 @@ async function handleCreateRecipe(req, res) {
       serves:      data.serves != null ? Number(data.serves) : null,
       difficulty:  data.difficulty ? String(data.difficulty).trim() : 'Unknown',
       image:       data.image ? String(data.image).trim() : '',
+      origin:      data.origin ? String(data.origin).trim() : '',
       ingredients: data.ingredients.map(ing => ({
         amount: String(ing.amount || '').trim(),
         item:   String(ing.item   || '').trim(),

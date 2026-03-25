@@ -5,6 +5,7 @@
   "serves": 1,
   "difficulty": "Beginner",
   "image": "https://www.themealdb.com/images/media/meals/uuyrrx1487327994.jpg",
+  "origin": "",
   "ingredients": [
     { "amount": "1 cup",   "item": "mixed frozen berries (strawberry, blueberry, raspberry)" },
     { "amount": "1",       "item": "banana" },
