@@ -120,12 +120,54 @@ function renderSidebar() {
 
   allRecipes.forEach(recipe => {
     const li = document.createElement('li');
-    li.textContent = recipe.title;
     li.dataset.id = recipe.id;
     if (recipe.id === activeRecipeId) li.classList.add('active');
+
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'recipe-title-text';
+    titleSpan.textContent = recipe.title;
+    li.appendChild(titleSpan);
+
+    const isDeletable = savedRecipes.some(r => r.id === recipe.id) ||
+                        customRecipes.some(r => r.id === recipe.id);
+    if (isDeletable) {
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn-delete-recipe';
+      deleteBtn.setAttribute('aria-label', `Delete ${recipe.title}`);
+      deleteBtn.textContent = '🗑️';
+      deleteBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        deleteRecipe(recipe);
+      });
+      li.appendChild(deleteBtn);
+    }
+
     li.addEventListener('click', () => showLocalRecipe(recipe));
     recipeList.appendChild(li);
   });
+}
+
+// ─── Delete recipe ───────────────────────────────────────
+function deleteRecipe(recipe) {
+  const savedIdx = savedRecipes.findIndex(r => r.id === recipe.id);
+  if (savedIdx !== -1) {
+    savedRecipes.splice(savedIdx, 1);
+    persistSavedRecipes();
+  }
+
+  const customIdx = customRecipes.findIndex(r => r.id === recipe.id);
+  if (customIdx !== -1) {
+    customRecipes.splice(customIdx, 1);
+    persistCustomRecipes();
+  }
+
+  if (activeRecipeId === recipe.id) {
+    activeRecipeId = null;
+    recipeCard.classList.add('hidden');
+    placeholder.classList.remove('hidden');
+  }
+
+  renderSidebar();
 }
 
 // ─── Show local recipe card ───────────────────────────────

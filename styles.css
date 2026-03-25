@@ -144,6 +144,48 @@ main {
   color: var(--clr-primary);
 }
 
+#recipe-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.recipe-title-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-delete-recipe {
+  flex-shrink: 0;
+  display: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--clr-text-muted);
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), color var(--transition);
+  padding: 0;
+}
+
+#recipe-list li:hover .btn-delete-recipe {
+  display: flex;
+}
+
+.btn-delete-recipe:hover {
+  background: #fdecea;
+  color: var(--clr-warning);
+}
+
 #recipe-list li.active {
   background: #fff3ec;
   border-left-color: var(--clr-primary);
