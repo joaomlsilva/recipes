@@ -311,11 +311,42 @@ function renderCard(recipe, isApiResult) {
 }
 
 // ─── Save API recipe locally ──────────────────────────────
-function saveApiRecipe(recipe) {
-  if (savedRecipes.some(r => r.id === recipe.id)) return;
+async function saveApiRecipe(recipe) {
+  if (savedRecipes.some(r => r.id === recipe.id) ||
+      localRecipes.some(r => r.id === recipe.id)) return;
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = '💾 Saving…';
+
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title:       recipe.title,
+        mealType:    recipe.mealType,
+        serves:      recipe.serves,
+        difficulty:  recipe.difficulty,
+        image:       recipe.image,
+        ingredients: recipe.ingredients,
+        steps:       recipe.steps,
+      }),
+    });
+
+    if (res.ok) {
+      const saved = await res.json();
+      localRecipes.push(saved);
+      saveBtn.textContent = '✔ Already Saved';
+      renderSidebar();
+      return;
+    }
+  } catch {
+    // server unavailable – fall through to sessionStorage fallback
+  }
+
+  // Fallback: persist in sessionStorage only
   savedRecipes.push(recipe);
   persistSavedRecipes();
-  saveBtn.disabled = true;
   saveBtn.textContent = '✔ Already Saved';
   renderSidebar();
 }
