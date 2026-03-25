@@ -10,9 +10,10 @@ const MEALDB_SEARCH_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=
 const MEALDB_LOOKUP_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 
 // ─── State ───────────────────────────────────────────────
-let localRecipes = [];      // loaded from recipes.json
-let savedRecipes  = [];     // saved API recipes (persisted in sessionStorage)
-let activeRecipeId = null;  // currently displayed local recipe id
+let localRecipes  = [];      // loaded from recipes.json
+let savedRecipes  = [];      // saved API recipes (persisted in sessionStorage)
+let customRecipes = [];      // user-created recipes (persisted in localStorage)
+let activeRecipeId = null;   // currently displayed local recipe id
 
 // ─── DOM refs ────────────────────────────────────────────
 const recipeList        = document.getElementById('recipe-list');
@@ -28,6 +29,18 @@ const noResultsMsg      = document.getElementById('no-results-msg');
 const loading           = document.getElementById('loading');
 const saveBtn           = document.getElementById('save-btn');
 
+// Add Recipe modal
+const addRecipeBtn      = document.getElementById('add-recipe-btn');
+const recipeModal       = document.getElementById('recipe-modal');
+const modalCloseBtn     = document.getElementById('modal-close-btn');
+const modalCancelBtn    = document.getElementById('modal-cancel-btn');
+const addRecipeForm     = document.getElementById('add-recipe-form');
+const addIngredientBtn  = document.getElementById('add-ingredient-btn');
+const addStepBtn        = document.getElementById('add-step-btn');
+const ingredientsList   = document.getElementById('ingredients-list');
+const stepsList         = document.getElementById('steps-list');
+const formError         = document.getElementById('form-error');
+
 // Card fields
 const cardImage      = document.getElementById('card-image');
 const cardTitle      = document.getElementById('card-title');
@@ -40,6 +53,7 @@ const cardSteps      = document.getElementById('card-steps');
 // ─── Init ─────────────────────────────────────────────────
 async function init() {
   loadSavedRecipes();
+  loadCustomRecipes();
   await fetchLocalRecipes();
   renderSidebar();
 }
@@ -70,13 +84,29 @@ function persistSavedRecipes() {
   sessionStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
 }
 
+// ─── Custom recipes (localStorage) ───────────────────────
+function loadCustomRecipes() {
+  try {
+    const raw = localStorage.getItem('customRecipes');
+    customRecipes = raw ? JSON.parse(raw) : [];
+  } catch {
+    customRecipes = [];
+  }
+}
+
+function persistCustomRecipes() {
+  localStorage.setItem('customRecipes', JSON.stringify(customRecipes));
+}
+
 // ─── Sidebar rendering ────────────────────────────────────
 function renderSidebar() {
   recipeList.innerHTML = '';
 
   const allRecipes = [
     ...localRecipes,
-    ...savedRecipes.filter(sr => !localRecipes.find(r => r.id === sr.id))
+    ...customRecipes.filter(cr => !localRecipes.find(r => r.id === cr.id)),
+    ...savedRecipes.filter(sr => !localRecipes.find(r => r.id === sr.id) &&
+                                  !customRecipes.find(r => r.id === sr.id))
   ];
 
   if (allRecipes.length === 0) {
@@ -330,7 +360,189 @@ function showLoading(visible) {
   loading.classList.toggle('hidden', !visible);
 }
 
+// ─── Add Recipe Modal ─────────────────────────────────────
+function openAddModal() {
+  addRecipeForm.reset();
+  formError.classList.add('hidden');
+  formError.textContent = '';
+  ingredientsList.innerHTML = '';
+  stepsList.innerHTML = '';
+  // Start with 3 ingredient rows and 2 step rows
+  addIngredientRow();
+  addIngredientRow();
+  addIngredientRow();
+  addStepRow();
+  addStepRow();
+  recipeModal.showModal();
+}
+
+function closeAddModal() {
+  recipeModal.close();
+}
+
+function addIngredientRow(amountVal = '', itemVal = '') {
+  const row = document.createElement('div');
+  row.className = 'ingredient-row';
+
+  const amountInput = document.createElement('input');
+  amountInput.type = 'text';
+  amountInput.name = 'ing-amount';
+  amountInput.placeholder = 'Amount';
+  amountInput.value = amountVal;
+  amountInput.setAttribute('aria-label', 'Ingredient amount');
+
+  const itemInput = document.createElement('input');
+  itemInput.type = 'text';
+  itemInput.name = 'ing-item';
+  itemInput.placeholder = 'Ingredient name';
+  itemInput.value = itemVal;
+  itemInput.setAttribute('aria-label', 'Ingredient name');
+
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'btn-remove-row';
+  removeBtn.setAttribute('aria-label', 'Remove ingredient');
+  removeBtn.textContent = '✕';
+  removeBtn.addEventListener('click', () => {
+    if (ingredientsList.children.length > 1) row.remove();
+  });
+
+  row.appendChild(amountInput);
+  row.appendChild(itemInput);
+  row.appendChild(removeBtn);
+  ingredientsList.appendChild(row);
+  itemInput.focus();
+}
+
+function addStepRow(val = '') {
+  const row = document.createElement('div');
+  row.className = 'step-row';
+
+  const stepNum = document.createElement('span');
+  stepNum.className = 'step-num';
+  stepNum.style.cssText = 'min-width:20px;font-weight:700;color:var(--clr-primary);font-size:0.85rem;';
+
+  const textarea = document.createElement('textarea');
+  textarea.name = 'step-text';
+  textarea.placeholder = 'Describe this step\u2026';
+  textarea.value = val;
+  textarea.rows = 2;
+  textarea.setAttribute('aria-label', 'Step description');
+
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'btn-remove-row';
+  removeBtn.setAttribute('aria-label', 'Remove step');
+  removeBtn.textContent = '✕';
+  removeBtn.addEventListener('click', () => {
+    if (stepsList.children.length > 1) {
+      row.remove();
+      updateStepNumbers();
+    }
+  });
+
+  row.appendChild(stepNum);
+  row.appendChild(textarea);
+  row.appendChild(removeBtn);
+  stepsList.appendChild(row);
+  updateStepNumbers();
+  textarea.focus();
+}
+
+function updateStepNumbers() {
+  Array.from(stepsList.children).forEach((row, i) => {
+    const num = row.querySelector('.step-num');
+    if (num) num.textContent = `${i + 1}.`;
+  });
+}
+
+function handleAddRecipe(e) {
+  e.preventDefault();
+  formError.classList.add('hidden');
+
+  // Collect & validate
+  const title      = document.getElementById('form-title').value.trim();
+  const mealType   = document.getElementById('form-meal-type').value;
+  const servesRaw  = document.getElementById('form-serves').value.trim();
+  const difficulty = document.getElementById('form-difficulty').value;
+  const image      = document.getElementById('form-image').value.trim();
+
+  // Clear previous invalid states
+  document.querySelectorAll('#add-recipe-form .invalid').forEach(el => el.classList.remove('invalid'));
+
+  let valid = true;
+  if (!title) {
+    document.getElementById('form-title').classList.add('invalid');
+    valid = false;
+  }
+  if (!mealType) {
+    document.getElementById('form-meal-type').classList.add('invalid');
+    valid = false;
+  }
+
+  // Ingredients: at least one item name filled
+  const ingRows = Array.from(ingredientsList.querySelectorAll('.ingredient-row'));
+  const ingredients = ingRows
+    .map(row => ({
+      amount: row.querySelector('[name="ing-amount"]').value.trim(),
+      item:   row.querySelector('[name="ing-item"]').value.trim(),
+    }))
+    .filter(ing => ing.item);
+
+  if (ingredients.length === 0) {
+    ingRows.forEach(row => row.querySelector('[name="ing-item"]').classList.add('invalid'));
+    valid = false;
+  }
+
+  // Steps: at least one non-empty step
+  const stepRows = Array.from(stepsList.querySelectorAll('.step-row'));
+  const steps = stepRows
+    .map(row => row.querySelector('[name="step-text"]').value.trim())
+    .filter(Boolean);
+
+  if (steps.length === 0) {
+    stepRows.forEach(row => row.querySelector('[name="step-text"]').classList.add('invalid'));
+    valid = false;
+  }
+
+  if (!valid) {
+    formError.textContent = 'Please fill in the required fields (marked with *).';
+    formError.classList.remove('hidden');
+    return;
+  }
+
+  const newRecipe = {
+    id:         `custom-${Date.now()}`,
+    title,
+    mealType,
+    serves:     servesRaw ? parseInt(servesRaw, 10) : null,
+    difficulty: difficulty || 'Unknown',
+    image:      image || '',
+    ingredients,
+    steps,
+    source:     'custom',
+  };
+
+  customRecipes.push(newRecipe);
+  persistCustomRecipes();
+  renderSidebar();
+  closeAddModal();
+  showLocalRecipe(newRecipe);
+}
+
 // ─── Event Listeners ──────────────────────────────────────
+addRecipeBtn.addEventListener('click', openAddModal);
+modalCloseBtn.addEventListener('click', closeAddModal);
+modalCancelBtn.addEventListener('click', closeAddModal);
+addIngredientBtn.addEventListener('click', () => addIngredientRow());
+addStepBtn.addEventListener('click', () => addStepRow());
+addRecipeForm.addEventListener('submit', handleAddRecipe);
+
+// Close modal on backdrop click
+recipeModal.addEventListener('click', e => {
+  if (e.target === recipeModal) closeAddModal();
+});
+
 searchBtn.addEventListener('click', handleSearch);
 
 searchInput.addEventListener('keydown', e => {

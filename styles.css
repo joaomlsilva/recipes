@@ -125,16 +125,6 @@ main {
   top: var(--header-height);
 }
 
-#sidebar h2 {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--clr-text-muted);
-  padding: 0 20px 12px;
-  border-bottom: 1px solid var(--clr-border);
-  margin-bottom: 8px;
-}
 
 #recipe-list {
   list-style: none;
@@ -477,6 +467,300 @@ main {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ─── Sidebar header (title + add button) ───────────────── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 12px;
+  border-bottom: 1px solid var(--clr-border);
+  margin-bottom: 8px;
+}
+
+.sidebar-header h2 {
+  /* override the previous standalone rule */
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-muted);
+  padding: 0;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+#add-recipe-btn {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1.5px solid var(--clr-primary);
+  background: transparent;
+  color: var(--clr-primary);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+
+#add-recipe-btn:hover {
+  background: var(--clr-primary);
+  color: #fff;
+}
+
+/* ─── Modal ─────────────────────────────────────────────── */
+#recipe-modal {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0;
+  max-width: 680px;
+  width: calc(100% - 32px);
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+}
+
+#recipe-modal::backdrop {
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(2px);
+}
+
+.modal-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: var(--clr-primary);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+#modal-close-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
+#modal-close-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* ─── Form ──────────────────────────────────────────────── */
+#add-recipe-form {
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 120px;
+}
+
+.form-group--grow {
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.required {
+  color: var(--clr-primary);
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px 12px;
+  border: 1.5px solid var(--clr-border);
+  border-radius: 7px;
+  font-size: 0.9rem;
+  color: var(--clr-text);
+  background: #fff;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--clr-primary);
+}
+
+.form-group input.invalid,
+.form-group select.invalid {
+  border-color: var(--clr-warning);
+}
+
+/* Section headers (Ingredients / Steps) */
+.form-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--clr-text-muted);
+  border-top: 1px solid var(--clr-border);
+  padding-top: 14px;
+}
+
+.btn-ghost {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1.5px solid var(--clr-accent);
+  background: transparent;
+  color: var(--clr-accent);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.btn-ghost:hover {
+  background: var(--clr-accent);
+  color: #fff;
+}
+
+/* Ingredient row */
+.ingredient-row,
+.step-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ingredient-row input[name="ing-amount"] {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.ingredient-row input[name="ing-item"],
+.step-row textarea {
+  flex: 1;
+}
+
+.step-row textarea {
+  padding: 8px 12px;
+  border: 1.5px solid var(--clr-border);
+  border-radius: 7px;
+  font-size: 0.9rem;
+  color: var(--clr-text);
+  background: #fff;
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.step-row textarea:focus {
+  border-color: var(--clr-primary);
+}
+
+.step-row textarea.invalid {
+  border-color: var(--clr-warning);
+}
+
+.btn-remove-row {
+  background: none;
+  border: 1.5px solid var(--clr-border);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--clr-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.btn-remove-row:hover {
+  border-color: var(--clr-warning);
+  color: var(--clr-warning);
+}
+
+/* Modal footer buttons */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid var(--clr-border);
+  padding-top: 14px;
+  margin-top: 4px;
+}
+
+.btn-primary {
+  padding: 9px 22px;
+  background: var(--clr-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.btn-primary:hover {
+  background: var(--clr-primary-dark);
+}
+
+.btn-secondary {
+  padding: 9px 18px;
+  background: transparent;
+  color: var(--clr-text-muted);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.btn-secondary:hover {
+  border-color: var(--clr-text-muted);
+  color: var(--clr-text);
 }
 
 /* ─── Utilities ─────────────────────────────────────────── */
