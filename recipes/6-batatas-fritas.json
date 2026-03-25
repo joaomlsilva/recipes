@@ -1,0 +1,18 @@
+{
+  "id": 6,
+  "title": "batatas fritas",
+  "mealType": "Snack",
+  "serves": 1,
+  "difficulty": "Beginner",
+  "image": "",
+  "ingredients": [
+    {
+      "amount": "2",
+      "item": "batatas"
+    }
+  ],
+  "steps": [
+    "cortar as batatas em palitos",
+    "fritar em oleo"
+  ]
+}
