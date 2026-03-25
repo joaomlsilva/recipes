@@ -1,0 +1,17 @@
+{
+  "id": 7,
+  "title": "ovos cozidos",
+  "mealType": "Breakfast",
+  "serves": 1,
+  "difficulty": "Beginner",
+  "image": "",
+  "ingredients": [
+    {
+      "amount": "1",
+      "item": "ovo"
+    }
+  ],
+  "steps": [
+    "cozer em agua a ferver 4 minutos"
+  ]
+}
