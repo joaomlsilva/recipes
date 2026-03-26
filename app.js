@@ -234,8 +234,30 @@ function deleteRecipe(recipe) {
 
   const isLocal = localRecipes.some(r => r.id === recipe.id);
   if (isLocal && !deletedLocalIds.includes(recipe.id)) {
-    deletedLocalIds.push(recipe.id);
-    persistDeletedLocalIds();
+    // Try server-side deletion first; fall back to marking as deleted locally
+    (async () => {
+      try {
+        const res = await fetch('/api/recipes', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: recipe.id }),
+        });
+
+        if (res.ok) {
+          // Remove from in-memory list so UI updates immediately
+          localRecipes = localRecipes.filter(r => r.id !== recipe.id);
+          renderSidebar();
+          return;
+        }
+      } catch (err) {
+        // network/server error – fall through to local-only behavior
+      }
+
+      // Fallback: mark as deleted locally
+      deletedLocalIds.push(recipe.id);
+      persistDeletedLocalIds();
+      renderSidebar();
+    })();
   }
 
   if (activeRecipeId === recipe.id) {

@@ -36,6 +36,69 @@ function slugify(str) {
     .replace(/^-+|-+$/g, '');          // trim leading/trailing hyphens
 }
 
+// DELETE /api/recipes – delete a recipe file by numeric id and update index.json
+async function handleDeleteRecipe(req, res) {
+  let body;
+  try {
+    body = await readBody(req);
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Failed to read request body' }));
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(body);
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid JSON' }));
+    return;
+  }
+
+  const id = Number(data && data.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    res.writeHead(422, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Missing or invalid "id" in request body' }));
+    return;
+  }
+
+  try {
+    const index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
+
+    // Find filename that starts with the numeric id and a hyphen
+    const idx = index.findIndex(filename => {
+      const match = filename.match(/^(\d+)-/);
+      return match && Number(match[1]) === id;
+    });
+
+    if (idx === -1) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: `Recipe with id ${id} not found` }));
+      return;
+    }
+
+    const filename = index[idx];
+    const filePath = path.join(RECIPES_DIR, filename);
+
+    // Remove the recipe file if it exists
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    // Remove from index and write back
+    index.splice(idx, 1);
+    fs.writeFileSync(INDEX_FILE, JSON.stringify(index, null, 2) + '\n', 'utf8');
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ deleted: filename }));
+  } catch (err) {
+    console.error('Error deleting recipe:', err);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Internal server error' }));
+  }
+}
+
 // Serve a static file, or 404
 function serveStatic(res, filePath) {
   // Prevent path traversal: resolved path must stay inside ROOT
@@ -158,6 +221,12 @@ const server = http.createServer(async (req, res) => {
   // POST /api/recipes
   if (method === 'POST' && reqUrl === '/api/recipes') {
     await handleCreateRecipe(req, res);
+    return;
+  }
+
+  // DELETE /api/recipes
+  if (method === 'DELETE' && reqUrl === '/api/recipes') {
+    await handleDeleteRecipe(req, res);
     return;
   }
 

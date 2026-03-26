@@ -1,0 +1,49 @@
+{
+  "id": 7,
+  "title": "Arroz-Doce",
+  "mealType": "Desert",
+  "serves": 8,
+  "difficulty": "Beginner",
+  "image": "",
+  "origin": "Dona Paula minha mãe",
+  "ingredients": [
+    {
+      "amount": "200g",
+      "item": "Açúcar"
+    },
+    {
+      "amount": "8",
+      "item": "Gemas de Ovo"
+    },
+    {
+      "amount": "2L",
+      "item": "Leite"
+    },
+    {
+      "amount": "1/2 Copo",
+      "item": "Água"
+    },
+    {
+      "amount": "1 Copo",
+      "item": "Arroz Carolino"
+    },
+    {
+      "amount": "1",
+      "item": "Casca de Limão"
+    },
+    {
+      "amount": "1 Colher de Sopa",
+      "item": "Margarina"
+    },
+    {
+      "amount": "Q/b",
+      "item": "Sal"
+    }
+  ],
+  "steps": [
+    "Colocar num tacho a casca de limão umas pedras de sal e a margarina a ferver no ½ copo de água.",
+    "Entretanto coloca-se o leite a ferver reservando apenas um pouco do leite frio. No leite frio que reservámos juntamos as gemas e batemos bem até estar homogéneo.",
+    "Quando a água estiver a ferver junta-se o arroz e deixa-se em lume brando até enxugar a água, nessa altura junta-se quase todo o leite fervido deixando um pouco do leite para ir juntando aos poucos e mexendo para o arroz não agarrar ao tacho até o mesmo estar bem cozido (normalmente o arroz cozido começa a subir tipo vulcão). Quando a água estiver a ferver junta-se o arroz e deixa-se em lume brando até enxugar a água, nessa altura junta-se quase todo o leite fervido deixando um pouco do leite para ir juntando aos poucos e mexendo para o arroz não agarrar ao tacho até o mesmo estar bem cozido (normalmente o arroz cozido começa a subir tipo vulcão).",
+    "Neste momento apaga-se o lume e junta-se os ovos com o leite com o lume apagado e mexendo sempre até estarem incorporados, de seguida volta-se a ligar o lume e deita-se o açúcar mexendo sempre."
+  ]
+}
