@@ -2,7 +2,7 @@
   "id": 6,
   "title": "Sushi",
   "mealType": "Supper",
-  "serves": null,
+  "serves": 2,
   "difficulty": "Unknown",
   "image": "https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg",
   "origin": "",

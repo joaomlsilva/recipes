@@ -58,7 +58,20 @@ async function init() {
   loadCustomRecipes();
   loadDeletedLocalIds();
   await fetchLocalRecipes();
+  reconcileDeletedIds();
   renderSidebar();
+}
+
+// ─── Reconcile stale soft-deleted IDs ────────────────────
+// If a recipe ID is in deletedLocalIds but the file still exists on the
+// server (successfully loaded into localRecipes), the server-side deletion
+// never completed. Clear the stale entry so the recipe becomes visible.
+function reconcileDeletedIds() {
+  if (deletedLocalIds.length === 0) return;
+  const staleIds = deletedLocalIds.filter(id => localRecipes.some(r => r.id === id));
+  if (staleIds.length === 0) return;
+  deletedLocalIds = deletedLocalIds.filter(id => !staleIds.includes(id));
+  persistDeletedLocalIds();
 }
 
 // ─── Load local recipes (one file per recipe) ────────────
@@ -68,14 +81,16 @@ async function fetchLocalRecipes() {
     if (!indexRes.ok) throw new Error('Failed to load recipes/index.json');
     const filenames = await indexRes.json();
 
-    const results = await Promise.all(
+    const results = await Promise.allSettled(
       filenames.map(async filename => {
         const res = await fetch(`recipes/${filename}`);
         if (!res.ok) throw new Error(`Failed to load recipes/${filename}`);
         return res.json();
       })
     );
-    localRecipes = results;
+    localRecipes = results
+      .filter(r => r.status === 'fulfilled')
+      .map(r => r.value);
   } catch (err) {
     console.error(err);
     localRecipes = [];
@@ -327,8 +342,10 @@ function renderCard(recipe, isApiResult) {
 
   // Save button: only shown for API results not yet saved
   if (isApiResult) {
+    const titleLower = recipe.title.trim().toLowerCase();
     const alreadySaved = savedRecipes.some(r => r.id === recipe.id) ||
-                         localRecipes.some(r => r.id === recipe.id);
+                         localRecipes.some(r => r.id === recipe.id) ||
+                         localRecipes.some(r => r.title.trim().toLowerCase() === titleLower);
     saveBtn.classList.remove('hidden');
     saveBtn.disabled = alreadySaved;
     saveBtn.textContent = alreadySaved ? '✔ Already Saved' : '💾 Save Recipe';
@@ -344,8 +361,10 @@ function renderCard(recipe, isApiResult) {
 
 // ─── Save API recipe locally ──────────────────────────────
 async function saveApiRecipe(recipe) {
+  const titleLower = recipe.title.trim().toLowerCase();
   if (savedRecipes.some(r => r.id === recipe.id) ||
-      localRecipes.some(r => r.id === recipe.id)) return;
+      localRecipes.some(r => r.id === recipe.id) ||
+      localRecipes.some(r => r.title.trim().toLowerCase() === titleLower)) return;
 
   saveBtn.disabled = true;
   saveBtn.textContent = '💾 Saving…';
